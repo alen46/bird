@@ -10,7 +10,7 @@ import pandas as pd
 import streamlit.components.v1 as components
 
 
-palm.configure(api_key="AIzaSyDW3Kc1rxsBLuaUnocaueIV9MR0P426uVM") 
+ 
 model = load_model('b.h5',compile=False)
 
 
