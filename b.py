@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-palm.configure(api_key="AIzaSyAqJ8w5cn-Rq2LlzONPhVY6Z7e73iAYjO8")
+palm.configure(api_key="")
 
 
 UPLOAD_FOLDER = 'uploads'
