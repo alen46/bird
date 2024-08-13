@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 import json
 import google.generativeai as palm
 
-palm.configure(api_key="AIzaSyAqJ8w5cn-Rq2LlzONPhVY6Z7e73iAYjO8")
+palm.configure(api_key="xxxxxxxx")
 
 
 def bmap(result):
