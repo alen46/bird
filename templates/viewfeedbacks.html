@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Bird Image Classification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;1,400&display=swap');
+        body{
+            font-family: Georgia, serif;
+            background-image: url('/static/1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin: 0;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            z-index: -1; /* Ensures the pseudo-element is behind the content */
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            justify-content: space-between;
+            width: 100%;
+            z-index: 1000
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            
+        }
+
+        .hamburger {
+            display: none;
+        }
+        .header__btn-2 {
+                border: none;
+                padding: 0.4rem 1rem;
+                background-color: white;
+                border-radius: 20px;
+                background-color: rgb(255, 183, 0);
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            background-color: #101010;
+        }
+        .style--btn {
+            width: 90%;
+            border-radius: 20px;
+            background-color: rgb(255, 183, 0);
+            margin: auto;
+            cursor: pointer;
+        }
+
+        .style--btn:hover {
+            scale: 1.05;
+            color: white;
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            list-style: none;
+                    color: white;
+                    text-decoration: none;
+                    line-height: 40px;
+                    display: flex;
+                    justify-content: center;
+        }
+
+        .nav-link{
+            margin-top: 20px;
+            padding-bottom: 16px;
+            background-color: rgba(255, 255, 255, 0.071);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-link:hover{
+            color: #482ff7;
+        }
+
+        .nav-logo {
+            font-size: 2.1rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin: 0;
+        }
+        .header__link {
+            list-style: none;
+            color: white;
+            text-decoration: none;
+            line-height: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .is--none {
+            display: none;
+        }
+        .header__link:hover {
+            color: rgb(255, 183, 0);
+        }
+@media only screen and (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        left: -300%;
+        top: 5rem;
+        flex-direction: column;
+        gap: 0px;
+        background-color: rgba(0, 0, 0, 0.9);
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow:
+            0 10px 27px rgba(0, 0, 0, 0.05);
+    }
+    .is--none {
+    display: contents;
+}
+    .nav-menu.active {
+        left: 0;
+    }
+    .nav-item {
+        margin: 1rem;
+    }
+    .header__btn-2{
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        -webkit-transform: translateY(8px) rotate(45deg);
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        -webkit-transform: translateY(-8px) rotate(-45deg);
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    
+}
+.table-users {
+	 border: 1px solid #327a81;
+	 border-radius: 10px;
+	 box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+	 max-width: calc(100% - 2em);
+	 margin: 1em auto;
+	 overflow: hidden;
+	 width: 800px;
+}
+ table {
+	 width: 100%;
+}
+ table td, table th {
+	 color: #2b686e;
+	 padding: 10px;
+}
+ table td {
+	 text-align: center;
+	 vertical-align: middle;
+}
+ table td:last-child {
+	 font-size: 0.95em;
+	 line-height: 1.4;
+	 text-align: left;
+}
+ table th {
+	 background-color: #daeff1;
+	 font-weight: 300;
+}
+ table tr:nth-child(2n) {
+	 background-color: white;
+}
+ table tr:nth-child(2n+1) {
+	 background-color: #edf7f8;
+}
+ @media screen and (max-width: 700px) {
+	 table, tr, td {
+		 display: block;
+	}
+	 td:first-child {
+		 position: absolute;
+		 top: 50%;
+		 transform: translateY(-50%);
+		 width: 100px;
+	}
+	 td:not(:first-child) {
+		 clear: both;
+		 margin-left: 100px;
+		 padding: 4px 20px 4px 90px;
+		 position: relative;
+		 text-align: left;
+	}
+	 td:not(:first-child):before {
+		 color: #91ced4;
+		 content: '';
+		 display: block;
+		 left: 0;
+		 position: absolute;
+	}
+	 td:nth-child(2):before {
+		 content: 'Name:';
+	}
+	 td:nth-child(3):before {
+		 content: 'Email:';
+	}
+	 td:nth-child(4):before {
+		 content: 'Phone:';
+	}
+	 td:nth-child(5):before {
+		 content: 'Comments:';
+	}
+	 tr {
+		 padding: 10px 0;
+		 position: relative;
+	}
+	 tr:first-child {
+		 display: none;
+	}
+}
+ @media screen and (max-width: 500px) {
+
+	 img {
+		 border: 3px solid;
+		 border-color: #daeff1;
+		 height: 100px;
+		 margin: 0.5rem 0;
+		 width: 100px;
+	}
+	 td:first-child {
+		 background-color: #c8e7ea;
+		 border-bottom: 1px solid #91ced4;
+		 border-radius: 10px 10px 0 0;
+		 position: relative;
+		 top: 0;
+		 transform: translateY(0);
+		 width: 100%;
+	}
+	 td:not(:first-child) {
+		 margin: 0;
+		 padding: 5px 1em;
+		 width: 100%;
+	}
+	 td:not(:first-child):before {
+		 font-size: 0.8em;
+		 padding-top: 0.3em;
+		 position: relative;
+	}
+	 td:last-child {
+		 padding-bottom: 1rem !important;
+	}
+	 tr {
+		 background-color: white !important;
+		 border: 1px solid #6cbec6;
+		 border-radius: 10px;
+		 box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+		 margin: 0.5rem 0;
+		 padding: 0;
+	}
+	 .table-users {
+		 border: none;
+		 box-shadow: none;
+		 overflow: visible;
+	}
+}
+ .table-users {
+	 border: 1px solid #327a81;
+	 border-radius: 10px;
+	 box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+	 max-width: calc(100% - 2em);
+	 margin: 1em auto;
+	 overflow: hidden;
+	 width: 800px;
+}
+ table {
+	 width: 100%;
+}
+ table td, table th {
+	 color: #2b686e;
+	 padding: 10px;
+}
+ table td {
+	 text-align: center;
+	 vertical-align: middle;
+}
+ table td:last-child {
+	 font-size: 0.95em;
+	 line-height: 1.4;
+	 text-align: left;
+}
+ table th {
+	 background-color: #daeff1;
+	 font-weight: 300;
+}
+ table tr:nth-child(2n) {
+	 background-color: white;
+}
+ table tr:nth-child(2n+1) {
+	 background-color: #edf7f8;
+}
+ @media screen and (max-width: 700px) {
+	 table, tr, td {
+		 display: block;
+	}
+	 td:first-child {
+		 position: absolute;
+		 top: 50%;
+		 transform: translateY(-50%);
+		 width: 100px;
+	}
+	 td:not(:first-child) {
+		 clear: both;
+		 margin-left: 100px;
+		 padding: 4px 20px 4px 90px;
+		 position: relative;
+		 text-align: left;
+	}
+	 td:not(:first-child):before {
+		 color: #91ced4;
+		 content: '';
+		 display: block;
+		 left: 0;
+		 position: absolute;
+	}
+	 td:nth-child(2):before {
+		 content: 'Name:';
+	}
+	 td:nth-child(3):before {
+		 content: 'Email:';
+	}
+	 td:nth-child(4):before {
+		 content: 'Phone:';
+	}
+	 td:nth-child(5):before {
+		 content: 'Comments:';
+	}
+	 tr {
+		 padding: 10px 0;
+		 position: relative;
+	}
+	 tr:first-child {
+		 display: none;
+	}
+}
+ @media screen and (max-width: 500px) {
+	 .header {
+		 background-color: transparent;
+		 color: #fff;
+		 font-size: 2em;
+		 font-weight: 700;
+		 padding: 0;
+		 text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+	}
+	 img {
+		 border: 3px solid;
+		 border-color: #daeff1;
+		 height: 100px;
+		 margin: 0.5rem 0;
+		 width: 100px;
+	}
+	 td:first-child {
+		 background-color: #c8e7ea;
+		 border-bottom: 1px solid #91ced4;
+		 border-radius: 10px 10px 0 0;
+		 position: relative;
+		 top: 0;
+		 transform: translateY(0);
+		 width: 100%;
+	}
+	 td:not(:first-child) {
+		 margin: 0;
+		 padding: 5px 1em;
+		 width: 100%;
+	}
+	 td:not(:first-child):before {
+		 font-size: 0.8em;
+		 padding-top: 0.3em;
+		 position: relative;
+	}
+	 td:last-child {
+		 padding-bottom: 1rem !important;
+	}
+	 tr {
+		 background-color: white !important;
+		 border: 1px solid #6cbec6;
+		 border-radius: 10px;
+		 box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+		 margin: 0.5rem 0;
+		 padding: 0;
+	}
+	 .table-users {
+		 border: none;
+		 box-shadow: none;
+		 overflow: visible;
+	}
+}
+ 
+ 
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="{{ url_for('home') }}" class="nav-logo">Bird Image Classification</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a class= "header__link"  href="{{ url_for('home') }}">Home</a></li>
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('about') }}">About</a></li>
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('predict') }}">Predict</a></li>
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('contact') }}">Contact</a></li>
+                {% if session.logged_in %}
+                    <li class="nav-item is--none"><a class= "header__link" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item is--none"><a class= "header__link" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+              </ul>
+                {% if session.logged_in %}
+                    <button class="header__btn-2" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+                {% else %}
+                    <button class="header__btn-2" onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+                {% endif %}
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    <div class="table-users">
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th><b>Name</b></th>
+                <th><b>Subject</b></th>
+                <th><b>Email</b></th>
+                <th><b>Message</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{ feedback.name }}</td>
+                    <td>{{ feedback.subject }}</td>
+                    <td>{{ feedback.email }}</td>
+                    <td>{{ feedback.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+
+<script>
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+    const navLink = document.querySelectorAll(".nav-link");
+
+        hamburger.addEventListener("click", mobileMenu);
+        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+        function mobileMenu() {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }
+</script>
+</html>

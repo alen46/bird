@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Bird Image Classification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;1,400&display=swap');
+        body{
+            font-family: Georgia, serif;
+            background-image: url('/static/1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin: 0;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            z-index: -1; /* Ensures the pseudo-element is behind the content */
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            justify-content: space-between;
+            width: 100%;
+            z-index: 1000
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            
+        }
+
+        .hamburger {
+            display: none;
+        }
+        .header__btn-2 {
+                border: none;
+                padding: 0.4rem 1rem;
+                background-color: white;
+                border-radius: 20px;
+                background-color: rgb(255, 183, 0);
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            background-color: #101010;
+        }
+        .style--btn {
+            width: 90%;
+            border-radius: 20px;
+            background-color: rgb(255, 183, 0);
+            margin: auto;
+            cursor: pointer;
+        }
+
+        .style--btn:hover {
+            scale: 1.05;
+            color: white;
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            list-style: none;
+                    color: white;
+                    text-decoration: none;
+                    line-height: 40px;
+                    display: flex;
+                    justify-content: center;
+        }
+
+        .nav-link{
+            margin-top: 20px;
+            padding-bottom: 16px;
+            background-color: rgba(255, 255, 255, 0.071);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-link:hover{
+            color: #482ff7;
+        }
+
+        .nav-logo {
+            font-size: 2.1rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin: 0;
+        }
+        .header__link {
+            list-style: none;
+            color: white;
+            text-decoration: none;
+            line-height: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .is--none {
+            display: none;
+        }
+        .header__link:hover {
+            color: rgb(255, 183, 0);
+        }
+@media only screen and (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        left: -300%;
+        top: 5rem;
+        flex-direction: column;
+        gap: 0px;
+        background-color: rgba(0, 0, 0, 0.9);
+        width: 100%;
+        border-radius: 10px;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow:
+            0 10px 27px rgba(0, 0, 0, 0.05);
+    }
+    .is--none {
+    display: contents;
+}
+    .nav-menu.active {
+        left: 0;
+    }
+    .nav-item {
+        margin: 1rem;
+    }
+    .header__btn-2{
+        display: none;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        -webkit-transform: translateY(8px) rotate(45deg);
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        -webkit-transform: translateY(-8px) rotate(-45deg);
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+input {
+	outline: none;
+	border: none;
+}
+
+textarea {
+  outline: none;
+  border: none;
+}
+
+textarea:focus, input:focus {
+  border-color: transparent !important;
+}
+
+input::-webkit-input-placeholder { color: #999999; }
+input:-moz-placeholder { color: #999999; }
+input::-moz-placeholder { color: #999999; }
+input:-ms-input-placeholder { color: #999999; }
+
+textarea::-webkit-input-placeholder { color: #999999; }
+textarea:-moz-placeholder { color: #999999; }
+textarea::-moz-placeholder { color: #999999; }
+textarea:-ms-input-placeholder { color: #999999; }
+
+/*---------------------------------------------*/
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+iframe {
+	border: none !important;
+}
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Contact 1 ]*/
+
+.contact1 {
+  width: 100%;
+  min-height: 100%;
+  padding: 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-contact1 {
+  width: 1163px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 90px 130px 88px 148px;
+}
+
+/*------------------------------------------------------------------
+[  ]*/
+.contact1-pic {
+  width: 296px;
+}
+
+.contact1-pic img {
+  max-width: 100%;
+}
+
+
+/*------------------------------------------------------------------
+[  ]*/
+.contact1-form {
+  width: 390px;
+}
+
+.contact1-form-title {
+  display: block;
+  font-family: Montserrat-ExtraBold;
+  font-size: 24px;
+  color: #333333;
+  line-height: 1.2;
+  text-align: center;
+  padding-bottom: 44px;
+}
+
+input.input1 {
+  height: 50px;
+  border-radius: 25px;
+  padding: 0 30px;
+}
+input.input1 + .shadow-input1 {
+  border-radius: 25px;
+}
+
+textarea.input1 {
+  min-height: 150px;
+  border-radius: 25px;
+  padding: 12px 30px;
+}
+textarea.input1 + .shadow-input1 {
+  border-radius: 25px;
+}
+
+/*---------------------------------------------*/
+.wrap-input1 {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+
+.input1 {
+  display: block;
+  width: 100%;
+  background: #e6e6e6;
+  font-family: Montserrat-Bold;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #666666;
+}
+
+.shadow-input1 {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 0px 0px;
+  color: rgba(87,184,70, 0.5);
+}
+
+.input1:focus + .shadow-input1 {
+  -webkit-animation: anim-shadow 0.5s ease-in-out forwards;
+  animation: anim-shadow 0.5s ease-in-out forwards;
+}
+
+@-webkit-keyframes anim-shadow {
+  to {
+    box-shadow: 0px 0px 80px 30px;
+    opacity: 0;
+  }
+}
+
+@keyframes anim-shadow {
+  to {
+    box-shadow: 0px 0px 80px 30px;
+    opacity: 0;
+  }
+}
+
+/*---------------------------------------------*/
+
+
+input[type="submit"] {
+    min-width: 193px;
+  height: 50px;
+  border-radius: 25px;
+  background: #57b846;
+  font-family: Montserrat-Bold;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 25px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-left: 7px;
+
+-webkit-transition: all 0.4s;
+-o-transition: all 0.4s;
+-moz-transition: all 0.4s;
+transition: all 0.4s;
+        }
+
+        input[type="submit"]:hover {
+            background: #333333;
+            -webkit-transform: translateX(10px);
+  -moz-transform: translateX(10px);
+  -ms-transform: translateX(10px);
+  -o-transform: translateX(10px);
+  transform: translateX(10px);
+
+        }
+
+
+
+
+/*------------------------------------------------------------------
+[ Responsive ]*/
+
+@media (max-width: 1200px) {
+  .contact1-pic {
+    width: 33.5%;
+  }
+
+  .contact1-form {
+    width: 44%;
+  }
+}
+
+@media (max-width: 992px) {
+  .container-contact1 {
+    padding: 90px 80px 88px 90px;
+  }
+
+  .contact1-pic {
+    width: 35%;
+  }
+
+  .contact1-form {
+    width: 55%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-contact1 {
+    padding: 90px 80px 88px 80px;
+  }
+
+  .contact1-pic {
+    display: none;
+  }
+
+  .contact1-form {
+    width: 100%;
+  }
+}
+
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="{{ url_for('home') }}" class="nav-logo">Bird Image Classification</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a class= "header__link"  href="{{ url_for('home') }}">Home</a></li>
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('about') }}">About</a></li>
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('predict') }}">Predict</a></li>
+                {% if session.admin %}
+                <li class="nav-item"><a class= "header__link" href="{{ url_for('view_feedbacks') }}">View Feedback</a></li>
+                {% endif %}
+                {% if session.logged_in %}
+                    <li class="nav-item is--none"><a class= "header__link" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item is--none"><a class= "header__link" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+              </ul>
+                {% if session.logged_in %}
+                    <button class="header__btn-2" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+                {% else %}
+                    <button class="header__btn-2" onclick="window.location.href='{{ url_for('login') }}'">Login</button>
+                {% endif %}
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    <div class="contact1">
+        <div class="container-contact1">
+            <div class="contact1-pic js-tilt" data-tilt>
+                <img src="{{ url_for('static', filename='img-01.png') }}" alt="IMG">
+            </div>
+                <form class="contact1-form validate-form" method="POST" action="{{ url_for('contact') }}">
+                {{ form.hidden_tag() }}
+                <span class="contact1-form-title">
+                    Get in touch
+                </span>
+    
+                <div class="wrap-input1 validate-input" data-validate = "Name is required">
+                    {{ form.name.label }}
+                    {{ form.name(class="input1", placeholder="Name") }}
+                    <span class="shadow-input1"></span>
+                    {% for error in form.name.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+    
+                <div class="wrap-input1 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+                    {{ form.email.label }}
+                    {{ form.email(class="input1", placeholder="Email") }}
+                    <span class="shadow-input1"></span>
+                    {% for error in form.email.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+    
+                <div class="wrap-input1 validate-input" data-validate = "Subject is required">
+                    {{ form.subject.label }}
+                    {{ form.subject(class="input1", placeholder="Subject") }}
+                    <span class="shadow-input1"></span>
+                    {% for error in form.subject.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+    
+                <div class="wrap-input1 validate-input" data-validate = "Message is required">
+                    {{ form.message.label }}
+                    {{ form.message(class="input1", placeholder="Message") }}
+                    <span class="shadow-input1"></span>
+                    {% for error in form.message.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div >
+                    {{ form.submit }}
+                </div>
+            </form>
+        </div>
+    </div>    
+</body>
+
+<script>
+    const hamburger = document.querySelector(".hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+    const navLink = document.querySelectorAll(".nav-link");
+
+        hamburger.addEventListener("click", mobileMenu);
+        navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+        function mobileMenu() {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove("active");
+            navMenu.classList.remove("active");
+        }
+</script>
+</html>
