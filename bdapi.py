@@ -19,14 +19,7 @@ def birdofday():
     common_name = random.choice(common_names)
     print("Random common name:", common_name)
     # Google API Section
-    googleUrl = "https://www.googleapis.com/customsearch/v1"
-    google_Payload = {
-        'key': 'AIzaSyA1bY0gkHoSRZFVMHoGQL3jcFFcX9XuTtU',
-        'cx': 'f4d08834ed79a4183',
-        'q': common_name+" ebird",
-        'num': 1,
-        'searchType': 'image'
-        }
+    
     response = requests.get(googleUrl, params=google_Payload)
     birdImgLink = extract_link(response.json())
     response = requests.get(birdImgLink)
